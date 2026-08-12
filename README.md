@@ -1,6 +1,6 @@
 # 知止（Zhizhi）— 元认知"先查后做"
 
-> **知止而后有定。** 一个面向所有 AI 编码 agent 的元认知 skill（Claude Code / Codex / Cursor 等通用）：打破 AI 智能体"埋头硬推、不检索、硬编造"的封闭执行习惯——先按任务轻重分级，再扫描信息缺口、自适应检索、校验方案、显式标注假设。
+> **知止而后有定。** 一个元认知"先查后做"skill：打破 AI 智能体"埋头硬推、不检索、硬编造"的封闭执行习惯——先按任务轻重分级，再扫描信息缺口、自适应检索、校验方案、显式标注假设。**方法论跨 Agent，当前封装以 Claude Code 工具模型为参考。**
 
 ## 三层"知止"
 
@@ -27,7 +27,8 @@
 | 任务分级 | 无，所有任务同一套流程 | **T0/T1/T2 分级**，轻任务秒退、重任务全流程 |
 | 检索委托 | 硬绑 domain-research，引用不存在的 skill | **自适应委托**：探测可用调研 skill，无则降级交叉检索 |
 | 触发与预算 | description 冗长、无检索预算 | **精简触发 + 明确"不适用"边界 + 检索预算**（防烧上下文） |
-| 执行后复盘 | 无 | **一行复盘**，跨使用自改进 |
+| 复盘闭环 | 无 | **记录→读取→提取模式→调整→验证**，真正的跨会话自改进 |
+| 评分/来源 | 固定权重 + 单轴 S/A/B/C/D | **硬约束 + 任务相关模板** + **来源多轴判定** |
 | 协作 | 仅 domain-research | **协作地图**对接 doubt-driven-development、grilling 等 |
 
 ## 依据个人 CLAUDE.md 的强化
@@ -41,9 +42,15 @@
 | 不要为了迎合而附和、不要默认用户正确 | **独立判断不附和**（用户断言与证据矛盾时带证据反驳） |
 | 信息可能过期/涉时效领域必须查证；高风险结论额外复核 | **查证强化**（时效强制检索 + 高风险双源复核 + 检索不越界） |
 
+## 定位边界（元认知交通警察，不做万能 workflow）
+
+知止的价值在**判断"什么时候不该继续凭脑子干、该把任务交给谁"**，不是把所有事情干完。刻意不扩展为万能 agent workflow，保持最小可辨识边界：
+
+**知止不做**：深度研究、网页爬取、代码审查、GitHub 分析、安全扫描、实现、测试——这些交给专门 skill/工具。知止只负责：缺口检测、路由、校验、假设标注。
+
 ## 安装（跨 agent）
 
-知止是**与 agent 无关的元认知方法论**，任何具备检索/工具调用能力的编码 agent 都能用：
+知止的**方法论跨 Agent**（Claude Code / Codex / Cursor / OpenCode 适用）；**当前封装（allowed-tools、工具命名、shell）以 Claude Code 为参考**，其他 Agent 需映射等价工具：
 
 | Agent | skills 目录 |
 |-------|-------------|
@@ -57,7 +64,7 @@
 cp -r zhizhi-skill ~/.claude/skills/zhizhi
 ```
 
-**工具名适配**：SKILL.md 中的 `allowed-tools` 与检索工具（WebSearch/WebFetch/Glob/Grep）是 Claude Code 的命名；其他 agent 映射到各自等价工具即可（Codex、Cursor 等都有对应检索/搜索能力）。**方法论不变，只换工具名。**
+**工具名适配**：SKILL.md 中的 `allowed-tools` 与检索工具（WebSearch/WebFetch/Glob/Grep）是 Claude Code 的命名；其他 agent 需把工具映射为各自等价能力（如 Codex 的 WebSearch/Bash/Grep）。**方法论跨 Agent，但封装不是"复制即用"，需按 agent 工具模型适配。**
 
 触发示例：
 ```text
@@ -68,7 +75,7 @@ zhizhi：帮我写个解析 CSV 的脚本（先查项目里有没有现成的）
 
 ```text
 zhizhi-skill/
-├── SKILL.md                    # 主技能（分级 + 四步工作流 + 预算 + 复盘）
+├── SKILL.md                    # 主技能（分级 + 四步工作流 + 复盘闭环 + trace）
 ├── README.md
 └── references/
     ├── triage.md               # 任务分级判定细则
