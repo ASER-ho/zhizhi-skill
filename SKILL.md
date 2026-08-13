@@ -18,7 +18,7 @@ metadata:
 
 ## 定位：元认知交通警察，不是检索器
 
-本 Skill **不重复实现检索逻辑**。它管的是检索**之外**的事。本 Skill 的**方法论跨 agent**（Claude Code / Codex / Cursor / OpenCode 等适用），但**当前封装以 Claude Code 工具模型为参考**（`allowed-tools`、工具命名、`shell: powershell` 均为 Claude Code 命名）——其他 agent 需要把工具名映射为各自等价能力，**不是复制即用**。
+本 Skill **不重复实现检索逻辑**。它管的是检索**之外**的事。本 Skill 的**方法论已验证于 Claude Code / Codex**，但**当前封装以 Claude Code 工具模型为参考**（`allowed-tools`、工具命名、`shell: powershell` 均为 Claude Code 命名）——其他 agent 需要把工具名映射为各自等价能力，**不是复制即用**。
 
 1. **分级（知轻重）**：判断任务该走多重的流程，轻任务不被流程压垮，重任务不漏关键缺口
 2. **缺口检测（知缺什么）**：识别上下文缺什么、影响多大、该找谁补

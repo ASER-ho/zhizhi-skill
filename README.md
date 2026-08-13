@@ -50,14 +50,12 @@
 
 ## 安装（跨 agent）
 
-知止的**方法论跨 Agent**（Claude Code / Codex / Cursor / OpenCode 适用）；**当前封装（allowed-tools、工具命名、shell）以 Claude Code 为参考**，其他 Agent 需映射等价工具：
+知止的**方法论已验证于 Claude Code / Codex**；**当前封装（allowed-tools、工具命名、shell）以 Claude Code 为参考**，其他 Agent 需映射等价工具：
 
 | Agent | skills 目录 |
 |-------|-------------|
 | Claude Code | `~/.claude/skills/zhizhi` |
 | Codex | `~/.codex/skills/zhizhi` |
-| Cursor | `~/.cursor/skills/zhizhi` |
-| OpenCode 等 | 各自 skills 目录 |
 
 ```bash
 # 复制（或 symlink）到目标 agent 的 skills 目录

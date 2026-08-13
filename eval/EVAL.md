@@ -33,21 +33,14 @@ cp -r <repo>/zhizhi-skill ~/.codex/skills/zhizhi
 # 运行（非交互）
 codex exec "zhizhi：<任务>"
 ```
-> ⚠️ 2026-08-12 本机实测：`codex exec` 因 MCP 连接 `chatgpt.com/backend-api/ps/mcp` 失败反复重连，网络受限下不可靠。需网络恢复后复测。
-
-### Cursor
-```bash
-mkdir -p ~/.cursor/skills
-cp -r <repo>/zhizhi-skill ~/.cursor/skills/zhizhi
-```
-> ⚠️ 本机无 Cursor CLI（`cursor` 未找到），无法自动跑，需手动在 Cursor 里触发。
+> 实测：VPN 后可在 codex 内手动触发；`codex exec` 命令行需模型名与 CLI 版本匹配。
 
 ## 运行记录
 
-| 任务 | Claude Code | Codex | Cursor |
-|------|-------------|-------|--------|
-| E1 分级 | | | |
-| E2 缺口 | | | |
-| E3 时效 | | | |
+| 任务 | Claude Code | Codex |
+|------|-------------|-------|
+| E1 分级 | | |
+| E2 缺口 | | |
+| E3 时效 | | |
 
-（Claude Code 腿结果见 `RESULTS.md`；Codex/Cursor 待环境就绪后填入）
+（结果见 `RESULTS.md`）

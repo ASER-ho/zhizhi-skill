@@ -35,10 +35,6 @@
 ### 关键发现：工具映射生效
 `rg.exe` 权限被拒 → 自动降级 PowerShell `Select-String`，印证知止"方法论跨 agent、工具名以 Claude Code 为例、其他 agent 映射等价工具"的设计成立。
 
-## Cursor 腿：本机无 CLI
-
-`cursor` 不在 PATH；AppData/Local/Programs/cursor 与 Program Files/Cursor 均不存在。**本机无法自动跑**。复测：`bash scripts/run-eval.sh --agent cursor`（需手动触发）。
-
 ## 复盘闭环实证（2026-08-13）
 
 `scripts/retro.py` 已实现并跑通端到端演示（seed→read→patterns→suggest→verify）：
@@ -53,15 +49,14 @@ seed 3 条（A-版本×2 重复）
 
 ## 汇总矩阵
 
-| 任务 | Claude Code | Codex | Cursor |
-|------|-------------|-------|--------|
-| E1 分级 | ✓ 通过 | ✓ 通过 | ⛔ 无 CLI |
-| E2 缺口 | ✓ 通过 | ✓ 通过 | ⛔ 同上 |
-| E3 时效 | ✓ 通过 | ✓ 通过 | ⛔ 同上 |
+| 任务 | Claude Code | Codex |
+|------|-------------|-------|
+| E1 分级 | ✓ 通过 | ✓ 通过 |
+| E2 缺口 | ✓ 通过 | ✓ 通过 |
+| E3 时效 | ✓ 通过 | ✓ 通过 |
 
 ## 已知限制（诚实声明）
 
 1. **Claude 腿是"执行方自评"**：本会话既执行又打分，存在自我评估偏差；评分基于真实工具行为（Grep/Glob/gh 有实际输出），非凭空断言。
 2. **Codex 腿是"用户手动触发 + 用户转述结果"**：非自动采集，评分基于用户提供的执行描述，未经工具日志逐条核验。
-3. **Cursor 腿仍缺**：本机无 CLI，需手动触发或换机补齐。
-4. **n=1**：每任务各 agent 只跑一次，不构成统计结论。
+3. **n=1**：每任务各 agent 只跑一次，不构成统计结论。

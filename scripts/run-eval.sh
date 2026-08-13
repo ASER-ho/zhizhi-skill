@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
-# 知止（Zhizhi）三 agent Eval 复测脚本
+# 知止（Zhizhi）Eval 复测脚本（Claude Code + Codex）
 #
-# 用途：在任意网络/环境正常的机器上，一键安装并跑 3 个 eval 任务，产出矩阵数据。
-# 用法：bash run-eval.sh [--agent all|codex|claude|cursor]
-#
-# 背景：2026-08-12 在作者本机，Claude 腿已真实跑完；Codex 因 API 传输超时（chatgpt.com 被地域封锁）
-#      无法执行；Cursor 本机无 CLI。本脚本供网络正常环境复测补齐 Codex / Cursor 两腿。
+# 用途：一键安装并跑 3 个 eval 任务，产出矩阵数据。
+# 用法：bash run-eval.sh [--agent all|codex|claude]
 
 set -e
 REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
@@ -13,7 +10,6 @@ AGENT="${1:-all}"
 
 CLAUDE_DIR="$HOME/.claude/skills/zhizhi"
 CODEX_DIR="$HOME/.codex/skills/zhizhi"
-CURSOR_DIR="$HOME/.cursor/skills/zhizhi"
 
 TASKS=(
   "zhizhi：把函数名 flatten_dict 改成 flattenMap"
@@ -40,17 +36,6 @@ run_codex() {
   done
 }
 
-run_cursor() {
-  echo "== Cursor（无 headless CLI，需手动）=="
-  install "$CURSOR_DIR"
-  echo "  请手动打开 Cursor，对每个任务输入："
-  i=1
-  for t in "${TASKS[@]}"; do
-    echo "    E$i: $t"
-    i=$((i+1))
-  done
-}
-
 run_claude() {
   echo "== Claude Code（交互式，需手动触发）=="
   install "$CLAUDE_DIR"
@@ -63,10 +48,9 @@ run_claude() {
 }
 
 case "$AGENT" in
-  all)   run_claude; echo; run_codex; echo; run_cursor ;;
+  all)   run_claude; echo; run_codex ;;
   codex) run_codex ;;
   claude) run_claude ;;
-  cursor) run_cursor ;;
   *) echo "未知 agent: $AGENT"; exit 1 ;;
 esac
 
