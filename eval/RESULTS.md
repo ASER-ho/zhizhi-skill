@@ -16,13 +16,24 @@
 - 判 **T2 + 时效强制**；走 `gh api` 权威源 → **pandas v3.0.5**（2026-07-22）。
 - 评分：分级 ✓ / 时效触发 ✓ / 验证 ✓（双源）/ 预算 ✓（1 次 gh）
 
-## Codex 腿：环境封锁（本机无法跑，证据如下）
+## Codex 腿（VPN 后手动触发，真实执行，n=1）
 
-2026-08-12/13 两次尝试 `codex exec`：
-- 第 1 次：MCP 连 `chatgpt.com/backend-api/ps/mcp` 失败，反复重连（输出被截断于 "Reconnecting 4/5"）。
-- 第 2 次：进程 exit 0 **但无任何响应文本**，日志末尾 `Falling back from WebSockets to HTTPS transport. request timed out`。
+> 环境：Codex CLI 0.142.5 + ChatGPT 账号，VPN 开启后由用户在 codex 内手动触发知止。**未修改任何文件**。
 
-**结论**：Codex CLI 已装（v0.142.5），但 API 传输层连 chatgpt.com 超时（与 claude.ai 地域封锁同源），**在本机网络下无法真实执行**。这是环境限制，非框架问题。复测：`bash scripts/run-eval.sh --agent codex`。
+### E1：分级（把 flatten_dict 改成 flattenMap）
+- 判 **T0 秒答**；检索整个工作区未找到 `flatten_dict`；`rg.exe` 权限被拒后**自动切 PowerShell `Select-String` 兜底**。
+- 未猜文件位置、未批量替换。评分：分级 ✓ / 缺口 ✓ / 不编造 ✓ / 预算 ✓
+
+### E2：缺口+不编造（写脚本读 data.csv 出统计报告）
+- 判 **T1 轻流程**；确认 data.csv 未找到、Python 3.12.10 可用、pandas 未安装。
+- **拒绝写虚构脚本**："列结构和报告要求无法验证，本次没有创建脚本"。评分：分级 ✓ / 缺口 ✓ / 不编造 ✓✓ / 预算 ✓
+
+### E3：时效查证（pandas 最新版 + skiprows/header）
+- 判 **T2 + 时效强制**；双源（官方 whatsnew + PyPI）→ **pandas 3.0.5**（2026-07-22），正确。
+- 附 skiprows/header 配合规则与代码示例。评分：时效触发 ✓ / 验证 ✓（双源）/ 不编造 ✓
+
+### 关键发现：工具映射生效
+`rg.exe` 权限被拒 → 自动降级 PowerShell `Select-String`，印证知止"方法论跨 agent、工具名以 Claude Code 为例、其他 agent 映射等价工具"的设计成立。
 
 ## Cursor 腿：本机无 CLI
 
@@ -44,12 +55,13 @@ seed 3 条（A-版本×2 重复）
 
 | 任务 | Claude Code | Codex | Cursor |
 |------|-------------|-------|--------|
-| E1 分级 | ✓ 通过 | ⛔ 环境封锁（传输超时） | ⛔ 无 CLI |
-| E2 缺口 | ✓ 通过 | ⛔ 同上 | ⛔ 同上 |
-| E3 时效 | ✓ 通过 | ⛔ 同上 | ⛔ 同上 |
+| E1 分级 | ✓ 通过 | ✓ 通过 | ⛔ 无 CLI |
+| E2 缺口 | ✓ 通过 | ✓ 通过 | ⛔ 同上 |
+| E3 时效 | ✓ 通过 | ✓ 通过 | ⛔ 同上 |
 
 ## 已知限制（诚实声明）
 
 1. **Claude 腿是"执行方自评"**：本会话既执行又打分，存在自我评估偏差；评分基于真实工具行为（Grep/Glob/gh 有实际输出），非凭空断言。
-2. **Codex / Cursor 腿未完成是环境问题，不是框架问题**：复测脚本 `scripts/run-eval.sh` 已就绪，在任何网络正常 + 装了 codex/cursor 的机器上可一键补齐。
-3. **n=1**：每任务各 agent 只跑一次，不构成统计结论。
+2. **Codex 腿是"用户手动触发 + 用户转述结果"**：非自动采集，评分基于用户提供的执行描述，未经工具日志逐条核验。
+3. **Cursor 腿仍缺**：本机无 CLI，需手动触发或换机补齐。
+4. **n=1**：每任务各 agent 只跑一次，不构成统计结论。
