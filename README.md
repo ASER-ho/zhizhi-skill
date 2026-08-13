@@ -77,13 +77,18 @@ zhizhi：帮我写个解析 CSV 的脚本（先查项目里有没有现成的）
 zhizhi-skill/
 ├── SKILL.md                    # 主技能（分级 + 四步工作流 + 复盘闭环 + trace）
 ├── README.md
-└── references/
-    ├── triage.md               # 任务分级判定细则
-    ├── gap-detection.md        # 5 类缺口检测清单
-    ├── routing.md              # 自适应路由、委托与检索预算
-    ├── validation.md           # 方案评分、可信度、冲突处理
-    ├── anti-patterns.md        # 反模式与自检清单
-    └── retro.md                # 执行后复盘方法
+├── references/
+│   ├── triage.md               # 任务分级判定细则
+│   ├── gap-detection.md        # 5 类缺口检测清单
+│   ├── routing.md              # 自适应路由、委托与检索预算
+│   ├── validation.md           # 方案评分、可信度、冲突处理
+│   ├── anti-patterns.md        # 反模式与自检清单
+│   └── retro.md                # 复盘闭环方法
+├── scripts/
+│   └── retro.py                # 复盘闭环工具（append/read/patterns/suggest）
+└── eval/
+    ├── EVAL.md                 # 三 agent 评估框架
+    └── RESULTS.md              # 评估结果
 ```
 
 ## License

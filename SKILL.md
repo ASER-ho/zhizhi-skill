@@ -136,6 +136,7 @@ API/版本/错误信息   → WebSearch + WebFetch 官方文档（P1）/ GitHub�
 
 - 复盘是**闭环不是摆设**：没有"读取→提取→调整→验证"的 retro 只是日志，不算自改进。
 - retro 文件是持久化状态，**自动写入**（这是跨会话自改进的前提）；路径 `~/.zhizhi/retro.md` 可用环境变量或用户偏好覆盖。
+- **落地工具**：`scripts/retro.py` 实现 记录/读取/提取/建议 四命令（`python scripts/retro.py suggest` 直接给出本次注入动作，`patterns` 自动标出 ≥2 次的重复失败模式）。Windows 下用 `PYTHONUTF8=1 python scripts/retro.py ...` 防中文乱码。
 
 ## 协作地图
 
